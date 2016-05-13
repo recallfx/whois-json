@@ -1,4 +1,5 @@
 {
+  "node" : true,
   "predef": [
     // Node comes with console, so does every modern browser
     "console"

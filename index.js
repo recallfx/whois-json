@@ -1,9 +1,9 @@
 var whois = require('node-whois');
-var changeCase = require('change-case');
+var camelCase = require('camel-case');
 var os = require('os');
 var availabilityChecks = require('./availability-checks.json');
 
-require('es6-shim')
+require('es6-shim');
 
 var log = console.log.bind(console);
 
@@ -18,7 +18,7 @@ function parseRawData(rawData) {
 
             // greater than since lines often have more than one colon, eg values with URLS
             if ( lineParts.length >= 2 ) {
-                var keyName = changeCase.camelCase(lineParts[0]);
+                var keyName = camelCase(lineParts[0]);
                 result[keyName] = lineParts.splice(1).join(':').trim();
             }
         }
@@ -64,6 +64,6 @@ module.exports = function(domain, options, cb){
 
         cb(null, result);
     });
-}
+};
 
 
