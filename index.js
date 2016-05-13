@@ -1,4 +1,4 @@
-var whois = require('node-whois');
+var whois = require('whois');
 var camelCase = require('camel-case');
 var os = require('os');
 var availabilityChecks = require('./availability-checks.json');
