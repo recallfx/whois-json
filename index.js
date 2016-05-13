@@ -1,6 +1,7 @@
 var whois = require('node-whois');
 var changeCase = require('change-case');
 var os = require('os');
+var availabilityChecks = require('./availability-checks.json');
 
 require('es6-shim')
 
@@ -12,7 +13,7 @@ function parseRawData(rawData) {
 
     lines.forEach(function(line){
         line = line.trim();
-        if ( line && line.includes(': ') ) {
+        if ( line && (line.includes(': ') || line.includes(':\t')) ) {
             var lineParts = line.split(':');
 
             // greater than since lines often have more than one colon, eg values with URLS
@@ -43,11 +44,22 @@ module.exports = function(domain, options, cb){
 
         if ( typeof rawData == 'object' ) {
             result = rawData.map(function(data) {
-                data.data = parseRawData(data.data);
+                var raw = data.data;
+
+                data.data = parseRawData(raw);
+
+                if (options.verbose) {
+                    data.raw = raw;
+
+                    var checks = availabilityChecks[data.server.host];
+                    if (checks) {
+                        data.data.isAvailable = -1 !== raw.indexOf(checks);
+                    }
+                }
                 return data;
             });
         } else {
-            result = parseRawData(rawData);
+            result = parseRawData(rawData, options);
         }
 
         cb(null, result);

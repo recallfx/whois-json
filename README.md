@@ -71,3 +71,7 @@ To pass options to node-whois, use:
         console.log(JSON.stringify(result, null, 2))
     })
 
+If `verbose = true`, we add two proerties to the result:
+    
+    raw // raw result
+    data.isAvailable // whether domain is available
